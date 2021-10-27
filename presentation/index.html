@@ -1,0 +1,210 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<!-- <link rel="stylesheet" href="dist/theme/black.css"> -->
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		
+		<div class="reveal">
+			<div class="slides">
+				<section class="cover wsb-title">
+					<img src="/img/wsb.png" alt="" class="logo">
+					<h2>Full Stack Application Development</h2>
+					<h5>by Caleb Mackey</h5>
+					<h6>Full Stack Developer at WSB</h6>
+				</section>
+
+				<section class="wsb-outline" data-background-image="/img/wsb-bgd.png">
+					<h3 style="color: white;">Outline</h3>
+					<ul style="color: white;">
+						<li>the "Full Stack"</li>
+						<li>working with the database</li>
+						<li>creating a web service</li>
+						<li>docmentation with Swagger</li>
+						<li>consuming the service</li>
+					</ul>
+				</section>
+
+				<section id="full-stack">
+					<section data-markdown>
+						<script type="text/template">
+							### What is the Full Stack?
+							this simply means there is a front end (client side web app) and backend (server side code that talks to a database or runs processes)
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+							#### Common Patterns
+							- talk to database (backend) <!-- .element: class="fragment" -->
+							- serialize data to JSON or other format (backend, such as RESTful API) <!-- .element: class="fragment" -->
+							- interact with data (front end) <!-- .element: class="fragment" -->
+							- bonus - provide good documentation for developers &#127881; <!-- .element: class="fragment" -->
+						</script>
+					</section>
+
+					<section>
+						<h5>Demo App: Beer and Brewery Finder</h5>
+						<ul>
+							<li>Python Backend</li>
+							<ul>
+								<li class="fragment">
+									<a href="https://www.sqlalchemy.org/" target="_blank" rel="noopener noreferrer">sqlalchemy</a> - used to interact with databases
+								</li>
+								<ul>
+									<li class="fragment"><a href="https://marshmallow.readthedocs.io/en/stable/index.html" target="_blank" rel="noopener noreferrer">marshmallow</a> - easy object serialization / desereialization</li>
+								</ul>
+								<li class="fragment"><a href="https://flask.palletsprojects.com/en/2.0.x/" target="_blank" rel="noopener noreferrer">flask</a> - microframework used to create RESTful API to create/fetch data</li>
+								<ul>
+									<li class="fragment"><a href="https://flask-restx.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener noreferrer">flask-restx</a> - create Swagger documentation</li>
+									<ul><li class="fragment"><a href="https://github.com/apryor6/flask_accepts" target="_blank" rel="noopener noreferrer">flask-accepts</a> - yet another Swagger helper for data model serialization</li></ul>
+								</ul>
+							</ul>
+						</ul>
+
+					</section>
+
+					<section>
+						<h5>Vue.js Front End</h5>
+						<ul>
+							<li class="fragment">TypeScript App created with the <a href="" target="_blank">@vue/cli</a></li>
+							<ul>
+								<li class="fragment"><a href="https://quasar.dev/" target="_blank" rel="noopener noreferrer">quasar</a> - Vue3 compatible material design UI Framework</li>
+								<li class="fragment"><a href="https://docs.mapbox.com/mapbox-gl-js/api/" target="_blank" rel="noopener noreferrer">mapbox-gl</a> - mapping API to show brewery locations</li>
+							</ul>
+						</ul>
+					</section>
+
+					<section data-background-color="black">
+						<h5>Ummm, what???</h5>
+						<img src="/img/futurama.jpeg" alt="" height="500">
+					</section>
+
+					<section>
+						<h6>Let's break this down...</h6>
+						<ul>
+							<li class="fragment">REST API - a set of definitions and protocols, usually passing and returning data as JSON</li>
+							<ul>
+								<li class="fragment">example - <a href="https://developers.arcgis.com/rest/" target="_blank" rel="noopener noreferrer">ArcGIS REST API</a></li>
+								<li class="fragment">comprised of <i>endpoints</i> that have specific tasks</li>
+							</ul>
+							<li class="fragment">But what about Swagger?</li>
+							<ul>
+								<li class="fragment"><a href="https://swagger.io/" target="_blank" rel="noopener noreferrer">Swagger</a> refers to a set of tools used to implement the <a href="https://www.openapis.org/blog/2017/07/26/the-oai-announces-the-openapi-specification-3-0-0" target="_blank" rel="noopener noreferrer">OpenAPI Specification</a></li>
+								<ul>
+									<li class="fragment">this documents the avaialble endpoints, data models, and response examples.  In <a href="https://swagger.io/tools/swagger-ui" target="_blank" rel="noopener noreferrer">Swagger UI</a> you can even test the API and get curl snippets</li>
+								</ul>
+							</ul>
+						</ul>
+					</section>
+
+				</section>
+
+				<!-- ::::::::::::::::::::::::::::::::::::::::::: DATABASE  ::::::::::::::::::::::::::::::::::::::::::: -->
+				<section id="database">
+					<section>
+						<h5>Talking to the database</h5>
+						<ul>
+							<li class="fragment"><a href="https://www.sqlalchemy.org/features.html" target="_blank" rel="noopener noreferrer">sqlalchemy</a> is a popular Python Object Relational Mapper (ORM) that makes it easy to work with relational databases with a pythonic and declarative syntax</li>
+							<li class="fragment">features:</li>
+								<ul>
+									<li class="fragment">database agnostic, use a common API no matter what the underlying database is</li>
+									<li class="fragment">prevents <a href="https://www.imperva.com/learn/application-security/sql-injection-sqli/" target="_blank" rel="noopener noreferrer">SQL injection</a></li>
+									<li class="fragment">ORM level triggers (before insert, after update, etc)</li>
+									<li class="fragment">supports <a href="https://docs.microsoft.com/en-us/ef/ef6/querying/related-data" target="_blank" rel="noopener noreferrer">eager loading</a></li>
+								</ul>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<h6>Basic Example</h6>
+					<pre>
+						<code lang="python">
+class Brewery(Base):
+		id = Column(Integer, primary_key=True)
+		name = Column(String(100))
+		city = Column(String(100))
+
+		# child relationship
+		beers = relationship('Beer', back_populates='brewery', cascade='all, delete-orphan')
+
+class Beer(Base):
+		id = Column(Integer, primary_key=True)
+		brewery_id = Column(Integer, ForeignKey('brewery.id'))
+		name = Column(String(100))
+		style = Column(String(100))
+
+		# parent relationship
+		brewery = relationship('Brewery', back_populates='beers')
+
+# find breweries in Minneapolis
+mpls = session.query(Brewery)\
+		.filter(city='Minneapolis')\
+		.order_by(Brewery.name)
+
+# check first result
+first = mpls.first()
+print(f'Brewery Name: {first.name}')
+
+# see what beers they serve
+for beer in first.beers: 
+		print(f'serves {beer.name} ({beer.style})')
+
+# find breweries that serve IPA's (the long way first)
+ipas = session.query(Beer)\
+    .filter(style='American-Style India Pale Ale')
+
+breweries_serving_ipas = []
+for ipa in ipas:
+    if ipa.brewery not in breweries_serving_ipas:
+		    breweries_serving_ipas.append(ipa.brewery)
+for brewery in sorted(breweries_serving_ipas, key=lambda x: x.name):
+    print(brewery.name)
+
+# or, a better way is to make sqlachemy do the work
+breweries_serving_ipas = session.query(Brewery)\
+     .join(Beer, Brewery.beer)\
+		 .filter(Beer.style == 'American-Style India Pale Ale')\
+		 .order_by(Brewery.name)\
+		 .all()
+
+# or use EXISTS
+breweries_serving_ipas = session.query(Brewery)\
+     .filter(Brewery.beer.has(Beer.style === 'American-Style India Pale Ale'))\
+		 .order_by(Brewery.name)\
+		 .all()
+						</code>
+					</pre>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>

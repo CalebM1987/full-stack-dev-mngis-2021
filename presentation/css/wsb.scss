@@ -1,0 +1,45 @@
+$wsb-tangerine: #faaf3f;
+$wsb-slate: #6c6864;
+$wsb-teal: #aee9e8;
+$wsb-slate-light: #a9a19c;
+
+.wsb-title, .wsb-title > .slide-background-content {
+  background-color: $wsb-tangerine !important;
+  font-family: 'Arial';
+  &h1, h2, h3, h4, h5, h6 {
+    color: white !important;
+    text-decoration: unset;
+  }
+}
+
+.logo {
+  position: absolute;
+  top: -7rem;
+  right: -16rem;
+  background-color: $wsb-slate-light;
+  padding: 0.5rem;
+}
+
+.dark .slide-background-present {
+  background-color: black;
+  &.slide-background-content > h1, h2, h3, h4, h5, h6, ul > li {
+    color: white;
+  }
+}
+
+.text-small {
+  font-size: 1.2rem;
+}
+
+.reveal li {font-size: 85%; }
+.reveal li li li li {font-size: 90%; }
+
+.reveal pre {
+  tab-size: 2 !important;
+}
+
+.reveal pre code{
+  font-size: 0.9em !important;
+  max-height: 490px !important;
+  /* width: 75% !important; */
+}
