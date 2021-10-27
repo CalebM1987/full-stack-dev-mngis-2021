@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "../brewery/static/app/precache-manifest.7065b1c1be4631506431f53691ce2272.js"
+  "../brewery/static/precache-manifest.f277a1ce64c728669db330e70e1c6114.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "brewery-finder"});

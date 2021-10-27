@@ -20,7 +20,7 @@ __all__ = ('Beer', 'Brewery', 'BeerPhotos', 'User', 'Category', 'Style', 'engine
 thisDir = os.path.dirname(__file__)
 db_path = os.path.join(os.path.dirname(os.path.dirname(thisDir)), 'db').replace(os.sep, '/')
 static_dir = os.path.join(thisDir, 'static')
-beer_photo_dir = os.path.join(static_dir, 'beers')
+beer_photo_dir = os.path.join(thisDir, 'img', 'beers')
 
 # make sure folder exists
 if not os.path.exists(db_path):

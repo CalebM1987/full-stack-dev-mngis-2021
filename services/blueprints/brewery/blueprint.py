@@ -12,4 +12,4 @@ brewery_blueprint = Blueprint(
 
 @brewery_blueprint.route('/app')
 def brewery_app():
-    brewery_blueprint.send_static_file('index.html')
+    return brewery_blueprint.send_static_file('index.html')
