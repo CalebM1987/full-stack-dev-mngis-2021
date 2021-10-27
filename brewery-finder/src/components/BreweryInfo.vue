@@ -1,19 +1,41 @@
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref, Ref, onMounted, defineAsyncComponent, watchEffect } from 'vue'
 import { selectedFeature } from '@/modules/state'
 import { getDirectionsUrl } from '@/modules/utils'
+import { findBeersFromBrewery } from '@/services/api'
+import { IBeer } from '@/types/service'
+
 
 export default defineComponent({
+  components: {
+    BeerInfo: defineAsyncComponent(()=> import('./BeerInfo.vue'))
+  },
+
   setup() {
 
+    const beers: Ref<IBeer[]> = ref([])
     const directionsUrl = computed(()=> getDirectionsUrl(selectedFeature.value))
 
+    watchEffect(async ()=> {
+      if (selectedFeature.value){
+        console.log('brewery changed: ', selectedFeature.value)
+        const resp = await findBeersFromBrewery(selectedFeature.value)
+        beers.value = resp
+      } else {
+        beers.value = []
+      }
+      
+    })
+
     return {
+      beers,
       directionsUrl,
       selectedFeature
     }
     
   },
+
+
 })
 </script>
 
@@ -31,6 +53,23 @@ export default defineComponent({
         |
         <a :href="directionsUrl" target="_blank" rel="noopener noreferrer">directions</a>
       </div>
+    </div>
+
+    <div class="beers-container">
+      <q-expansion-item
+        v-if="beers.length"
+        default-opened
+        expand-separator
+        label="Featured Beers"
+      >
+        <beer-info 
+          v-for="beer in beers" 
+          :key="beer.id" 
+          :beer="beer"
+        ></beer-info>
+
+      </q-expansion-item>
+      
     </div>
 
   </div>
