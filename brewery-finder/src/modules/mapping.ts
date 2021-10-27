@@ -4,6 +4,9 @@ import { findBreweries } from '@/services/api'
 export async function initMap(map: Map){
   const fc = await findBreweries()
 
+  //@ts-ignore
+  window.map = map
+
   map.loadImage('./img/beer.png', (err, img) => {
     if (err) throw err;
     // load icon and add to map style
@@ -22,7 +25,7 @@ export async function initMap(map: Map){
       type: 'symbol',
       layout: {
         'icon-image': 'beer',
-        // 'icon-size': 
+        'icon-size': 0.1
       }
     })
 

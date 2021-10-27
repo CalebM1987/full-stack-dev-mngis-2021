@@ -6,10 +6,10 @@ from .models import Brewery, session
 from .schemas import FeatureCollectionSchema, FeatureCollectionResponse, BrewerySchema
 from services.utils import query_table, get_query_model, parse_args, update_response, success, create_response, delete_response
 
-brewery_ns = Namespace('Breweries', 'Brewery API Methods')
+brewery_ns = Namespace('Breweries', 'Brewery API Methods', path='/breweries')
 
 
-@brewery_ns.route('/breweries')
+@brewery_ns.route('')
 class BreweriesHandler(Resource):
 
     @accepts(*get_query_model(Brewery), api=brewery_ns)
@@ -33,7 +33,7 @@ class BreweriesHandler(Resource):
         session.commit()
         return success(message='created new brewery', id=brewery.id)
 
-@brewery_ns.route('/breweries/<int:id>')
+@brewery_ns.route('/<int:id>')
 class BreweryHandler(Resource):
 
     @accepts(schema=BrewerySchema(partial=True), api=brewery_ns)
@@ -60,7 +60,7 @@ class BreweryHandler(Resource):
         return success(message='no brewery found')
 
 
-@brewery_ns.route('/breweries/geojson')
+@brewery_ns.route('/geojson')
 class BreweriesHandlerGeojson(Resource):
 
     @accepts(*get_query_model(Brewery), api=brewery_ns)

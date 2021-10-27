@@ -10,11 +10,11 @@ export const instance = axios.create({
 })
 
 export async function findBreweries(params?: IQueryOptions & IBrewery): Promise<BreweryCollection> {
-  const { data } = await instance.get('/breweries/geojson', { params })
+  const { data } = await instance.get('/brewery/breweries/geojson', { params })
   return data as BreweryCollection
 }
 
 export async function findBeers(params?: IQueryOptions & IBeer): Promise<IBeer[]> {
-  const { data } = await instance.get('/beers', { params })
+  const { data } = await instance.get('/brewery/beers', { params })
   return data as IBeer[]
 }

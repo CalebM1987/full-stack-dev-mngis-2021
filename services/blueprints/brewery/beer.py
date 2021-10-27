@@ -6,10 +6,10 @@ from .models import Beer, session
 from .schemas import BeerSchema
 from services.utils import query_table, get_query_model, parse_args, update_response, success, create_response, delete_response
 
-beer_ns = Namespace('Beers', 'Beer API Methods')
+beer_ns = Namespace('Beers', 'Beer API Methods', path='/beers')
 
 
-@beer_ns.route('/beers')
+@beer_ns.route('')
 class BeersHandler(Resource):
 
     @accepts(*get_query_model(Beer), api=beer_ns)
@@ -33,7 +33,7 @@ class BeersHandler(Resource):
         session.commit()
         return success(message='created new beer', id=beer.id)
 
-@beer_ns.route('/beers/<int:id>')
+@beer_ns.route('/<int:id>')
 class BeerHandler(Resource):
 
     @accepts(schema=BeerSchema(partial=True), api=beer_ns)

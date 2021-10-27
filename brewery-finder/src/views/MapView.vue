@@ -67,23 +67,6 @@ export default defineComponent({
     
       <mapbox-geolocate-control />
 
-      <mapbox-draw-control 
-        ref="drawControls"
-        position="top-left"
-        :controls="{ polygon: true, trash: true }"
-        @create="addPolygon"
-        @update="isDrawing=true"
-      >button</mapbox-draw-control>
-
-      <mapbox-popup
-        v-if="showPopup"
-        :lngLat="[clickPoint.lng, clickPoint.lat]"
-      >
-        <popup-content
-          :feature="selectedFeature"
-          @close="showPopup = false"
-        ></popup-content>
-      </mapbox-popup>
 
     </mapbox-map>
 
@@ -98,7 +81,7 @@ export default defineComponent({
     position: absolute;
     top: 0;
     left: 0;
-    right: 0
+    right: 0;
     bottom: 0;
   }
 

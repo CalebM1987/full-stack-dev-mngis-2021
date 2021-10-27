@@ -2,6 +2,7 @@ import { ref, Ref, computed, inject, onMounted, watchEffect } from 'vue';
 import { Map, PointLike, MapboxGeoJSONFeature, LngLat } from 'mapbox-gl';
 import { selection, selectionIndex, selectedFeature } from '@/modules/state'
 import { initMap } from '@/modules/mapping'
+import { EventBus } from '@/modules/event'
 import Deferred from 'my-deferred';
 
 export function mapSetup() {
@@ -22,9 +23,8 @@ export function mapSetup() {
     ] as [PointLike, PointLike ];
   
     const feats = map.queryRenderedFeatures(bbox, {
-      // layers: ['mapillary-images', 'mapillary-sequences', 'detections']
+      layers: ['breweries-layer']
     })
-      .filter(ft => ft.source.includes('mapillary'))
     console.log('feats?', feats)
     selection.value = feats
     selectionIndex.value = 0
@@ -46,7 +46,6 @@ export function mapSetup() {
       console.log('zoom to feature event: ',  ft)
       map.flyTo({ center: ft.geometry?.coordinates, zoom: 19, curve: 1, speed: 1.2 })
     })
-    updateHook({ map, mapModule })
 
     map.on('mouseenter', 'detections', () => {
       map.getCanvas().style.cursor = 'pointer';
@@ -89,31 +88,24 @@ export function mapSetup() {
     const map = await vmb_map?.promise
     console.log('deferred map?', map)
 
+    //@ts-ignore
+    window.state = {
+      selectedFeature,
+      selection,
+      selectionIndex
+    }
+
     
   })
 
-  const downloadMapFeatures = async () => {
-    // const map = await vmb_map?.promise
-    // console.log('deferred map???', map)
-    const { map } = getHook()!
-    if (map){
-      const source = getMapDetectionsSource(map)
-      //@ts-ignore
-      const geojson: FeatureCollection<Point, Properties> = source._data
-      shpWriter.download(geojson)
-    }
-  }
   return {
     vmb_map,
     selectedFeature,
     selectionIndex,
-    isDrawing,
+    // isDrawing,
     selection,
     clickPoint,
-    showPopup,
     onMapLoad,
-    downloadMapFeatures,
-    handleGeoCodeResult,
     //@ts-ignore (process is undefined???)
     accessToken: process.env.VUE_APP_MAPBOX_TOKEN
   }
