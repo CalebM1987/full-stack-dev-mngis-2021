@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, defineAsyncComponent } from 'vue'
-import { selectedFeature } from '@/modules/state'
+import { selectedFeature, layoutMode } from '@/modules/state'
 import SidebarMenu from './SidebarMenu.vue'
 
 export default defineComponent({
@@ -13,6 +13,7 @@ export default defineComponent({
 
   setup() {
     return {
+      layoutMode,
       selectedFeature
     }
     
@@ -22,7 +23,7 @@ export default defineComponent({
 
 <template>
   <div class="drawer-content">
-    <brewery-info v-if="selectedFeature" />
+    <brewery-info v-if="selectedFeature && layoutMode === 'feature'" />
     <sidebar-menu v-else></sidebar-menu>
   </div>
   

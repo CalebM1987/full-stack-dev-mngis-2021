@@ -1,6 +1,6 @@
 import { ref, Ref, computed, inject, onMounted, watchEffect } from 'vue';
 import { Map, PointLike, MapboxGeoJSONFeature, LngLat } from 'mapbox-gl';
-import { selection, selectionIndex, selectedFeature } from '@/modules/state'
+import { selection, selectionIndex, selectedFeature, layoutMode } from '@/modules/state'
 import { initMap } from '@/modules/mapping'
 import { EventBus } from '@/modules/event'
 import Deferred from 'my-deferred';
@@ -28,6 +28,8 @@ export function mapSetup() {
     console.log('feats?', feats)
     selection.value = feats
     selectionIndex.value = 0
+
+    layoutMode.value = feats.length ? 'feature': 'menu'
   }
 
   const onMapLoad = (map: Map) => {
@@ -92,7 +94,8 @@ export function mapSetup() {
     window.state = {
       selectedFeature,
       selection,
-      selectionIndex
+      selectionIndex,
+      layoutMode
     }
 
     
