@@ -1,5 +1,7 @@
 import os
 import sys
+import shutil
+import time
 from datetime import datetime
 from sqlalchemy import Column, ForeignKey, Integer, String, Float, LargeBinary, DateTime
 from sqlalchemy.ext.declarative import declarative_base
@@ -7,6 +9,7 @@ from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
 from flask_login import UserMixin
 from datetime import timedelta
+from werkzeug.datastructures import FileStorage
 from .utils import to_geometry_geojson
 #from typing import Dict
 
@@ -14,8 +17,10 @@ from .utils import to_geometry_geojson
 __all__ = ('Beer', 'Brewery', 'BeerPhotos', 'User', 'Category', 'Style', 'engine', 'Base', 'session')
 
 # db path, make sure "check_same_thread" is set to False
-thisDir = os.path.dirname(os.path.dirname(__file__))
-db_path = os.path.join(os.path.dirname(thisDir), 'db').replace(os.sep, '/')
+thisDir = os.path.dirname(__file__)
+db_path = os.path.join(os.path.dirname(os.path.dirname(thisDir)), 'db').replace(os.sep, '/')
+static_dir = os.path.join(thisDir, 'static')
+beer_photo_dir = os.path.join(static_dir, 'beers')
 
 # make sure folder exists
 if not os.path.exists(db_path):
@@ -53,6 +58,24 @@ class Beer(Base):
     created_by = Column(Integer, ForeignKey('user.id'))
     brewery = relationship('Brewery', back_populates='beers')
     creator = relationship('User', back_populates='submitted_beers')
+
+    def add_photo(self, image, name=None):
+        # handle file path 
+        if os.path.isfile(image):
+            if not name:
+                name = os.path.basename(name)
+            shutil.copy2(image, os.path.join(beer_photo_dir, name))
+        if not name:
+            name = time.strftime('beer_%Y%m%d%H%M%S.png')
+
+        if isinstance(image, FileStorage):
+            print('filestorage: ', image, image.mimetype)
+            with open(os.path.join(beer_photo_dir, name), 'wb') as f:
+                f.write(image.stream.read())
+            
+
+        self.photo_name = name
+        session.commit()
 
     def __repr__(self):
         return '<{}: "{}" ({})>'.format(self.__class__.__name__, self.name, self.style)

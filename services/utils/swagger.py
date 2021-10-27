@@ -31,8 +31,23 @@ def success(**kwargs):
     kwargs.update({ 'status': 'success' })
     return jsonify(kwargs)
 
+def dynamic_error(**kwargs):
+    if not kwargs.get('message'):
+        kwargs['message'] = 'there was an error with this request, please contact the system administrator'
+    kwargs.update({ 'status': 'error' })
+    return jsonify(kwargs)
+
+
 def success_response(*args):
     args += (dict(name="status", type=str, choices=['success', 'error'], help='the status of the request'),)
+    return args
+
+def error_response(*args):
+    args += (
+        dict(name="status", type=str, choices=['success', 'error'], help='the status of the request'),
+        dict(name="message", type=str, help='the error message')
+    )
+
     return args
 
 def create_response(*args):

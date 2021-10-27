@@ -118,6 +118,11 @@ class BeerSchema(BaseSchema):
     color = fields.String(description=Beer.color.doc)
     photo_name = fields.String(dump_only=True, description=Beer.photo_name.doc)
     created_by = fields.Integer(dump_only=True, description=Beer.created_by.doc)
+
+    @post_load
+    def to_beer(self, data, **kwargs):
+        """convert geojson to flattened Beer object"""
+        return Beer(**data)
     
 
 

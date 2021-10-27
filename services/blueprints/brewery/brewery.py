@@ -2,8 +2,8 @@ from services.utils.swagger import create_response, delete_response
 from flask_restx import Resource, Namespace
 from flask_accepts import accepts, responds
 from flask import request
-from .models import Brewery, session
-from .schemas import FeatureCollectionSchema, FeatureCollectionResponse, BrewerySchema
+from .models import Brewery, Beer, session
+from .schemas import FeatureCollectionSchema, FeatureCollectionResponse, BrewerySchema, BeerSchema
 from services.utils import query_table, get_query_model, parse_args, update_response, success, create_response, delete_response
 
 brewery_ns = Namespace('Breweries', 'Brewery API Methods', path='/breweries')
@@ -59,6 +59,29 @@ class BreweryHandler(Resource):
             return success(message='successfully deleted brewery', id=id)
         return success(message='no brewery found')
 
+@brewery_ns.route('/<int:id>/beers')
+class BreweryHandler(Resource):
+
+    @responds(schema=BeerSchema(many=True), api=brewery_ns)
+    def get(self, id):
+        """find beers for a brewery"""
+        brewery = session.query(Brewery).get(id)
+        if brewery is not None:
+            return brewery.beers
+        return success(message='no brewery found')
+
+    @accepts(schema=BeerSchema, api=brewery_ns)
+    @responds(*create_response())
+    def post(self, id):
+        """add a beer to a brewery"""
+        brewery = session.query(Brewery).get(id)
+        if brewery is not None:
+            beer = BeerSchema().load(request.json)
+            print('beer??', beer, request.json)
+            brewery.beers.append(beer)
+            session.commit()
+            return success(message='successfully created beer for brewery', id=beer.id)
+        return success(message='no brewery found')
 
 @brewery_ns.route('/geojson')
 class BreweriesHandlerGeojson(Resource):
