@@ -1,6 +1,6 @@
 <script lang="ts">
-import { defineComponent, computed, PropType } from 'vue'
-import { getBeerImageUrl, baseURL } from '@/services/api'
+import { defineComponent, computed, PropType, toRefs, Ref } from 'vue'
+import { getBeerImgUrl, baseURL } from '@/services/api'
 import { IBeer } from '@/types/service'
 
 export default defineComponent({
@@ -11,11 +11,9 @@ export default defineComponent({
     }
   },
   setup(props) {
-    
-    // const imgUrl = computed(()=> getBeerImageUrl(props.beer))
-    const imgUrl = computed(() => props.beer.photo_name ? `${baseURL}/brewery/beers/${props.beer.id}/photo`: null)
-    // const imgUrl = null
-    console.log('props.beer? ', props.beer, imgUrl.value)
+    const { beer } = toRefs(props) 
+    // having weird typescript issues in my vs code :(
+    const imgUrl = computed(()=> getBeerImgUrl((beer as Ref<IBeer>).value))
     return {
       imgUrl
     }

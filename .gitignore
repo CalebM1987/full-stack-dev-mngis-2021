@@ -1,5 +1,6 @@
 commands.md
 .env
+static/app
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

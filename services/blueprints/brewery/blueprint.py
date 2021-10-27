@@ -9,3 +9,7 @@ brewery_blueprint = Blueprint(
     static_folder=staticDir, 
     url_prefix='/brewery'
 )
+
+@brewery_blueprint.route('/app')
+def brewery_app():
+    brewery_blueprint.send_static_file('index.html')

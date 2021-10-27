@@ -20,8 +20,8 @@ export async function findBeersFromBrewery(ft: BreweryFeature): Promise<IBeer[]>
   return data as IBeer[]
 }
 
-export function getBeerImgUrl(beer: IBeer): string {
-  return `${baseURL}/brewery/beers/${beer.id}/photo`
+export function getBeerImgUrl(beer: IBeer): string | null {
+  return beer.photo_name ? `${baseURL}/brewery/beers/${beer.id}/photo`: null
 }
 
 export async function findBeers(params?: IQueryOptions & IBeer): Promise<IBeer[]> {

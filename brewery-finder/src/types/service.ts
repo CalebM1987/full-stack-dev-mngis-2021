@@ -1,4 +1,5 @@
 import { Feature, FeatureCollection, Point } from '@turf/turf';
+import { MapboxGeoJSONFeature } from 'mapbox-gl'
 
 export interface IBrewery {
   state?:     string;
@@ -21,7 +22,7 @@ export interface IBrewery {
   zip?:       string;
 }
 
-export type BreweryFeature = Feature<Point, IBrewery>;
+export type BreweryFeature = Feature<Point, IBrewery> | MapboxGeoJSONFeature;
 
 export type BreweryCollection = FeatureCollection<Point, IBrewery>;
 

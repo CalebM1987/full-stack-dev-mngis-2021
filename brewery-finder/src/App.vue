@@ -1,7 +1,7 @@
 <script lang="ts">
 import { ref } from 'vue'
-import Home from './views/Home'
-import Sidebar from '@/components/Sidebar'
+import Home from './views/Home.vue'
+import Sidebar from '@/components/Sidebar.vue'
 import { leftDrawerOpen } from '@/modules/state'
 
 export default {
